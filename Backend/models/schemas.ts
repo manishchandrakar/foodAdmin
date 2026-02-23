@@ -1,8 +1,7 @@
 import { z } from "zod";
+import { NAME_REGEX, PASSWORD_REGEX, PHONE_REGEX, COUPON_CODE_REGEX } from "./regex";
 
-
-
-// ─── Helper ───────────────────────────────────────────────────────────────────
+// ─── Helper ──────────────────────────────────────────────────────────────────
 export const parseId = (
   id: string,
 ): { success: true; id: number } | { success: false; error: string } => {
