@@ -9,7 +9,7 @@ import routes from "./routes/index";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT: number = Number(process.env.PORT) || 5000;
 
 // ─── CORS ───────────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
@@ -49,7 +49,7 @@ app.get("/health", (_req, res) => {
 // ─── Global Error Handler ─────────────────────────────────────────────────────
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT,"0.0.0.0", () => {
   console.log(`[server] FoodAdmin API running on http://localhost:${PORT}`);
 });
 
