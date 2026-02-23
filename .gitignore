@@ -1,0 +1,55 @@
+# ===========================
+# Node.js / Dependencies
+# ===========================
+**/node_modules/
+**/.pnp
+**/.pnp.js
+
+# ===========================
+# Build outputs
+# ===========================
+**/dist/
+**/.next/
+**/out/
+**/build/
+
+# ===========================
+# Environment files
+# ===========================
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# ===========================
+# Prisma
+# ===========================
+**/prisma/migrations/
+
+# ===========================
+# Logs
+# ===========================
+**/logs/
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# ===========================
+# Editor / OS
+# ===========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Old / Duplicate folders
+# ===========================
+FruitWebsite/
+
+# ===========================
+# Claude Code
+# ===========================
+.claude/

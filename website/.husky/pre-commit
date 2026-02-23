@@ -1,0 +1,4 @@
+#!/bin/sh
+# Pre-commit: lightweight lint check only
+echo "🔍 ESLint check..."
+yarn lint

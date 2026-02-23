@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+@plugin './hero.ts';
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Theme color (green for fruit website) */
+  --color-themeColor: #16a34a;
+  --color-themeColorLight: #22c55e;
+  --color-themeColorDark: #15803d;
+
+  /* Grays */
+  --color-lightGray: #e2e8f0;
+  --color-slateGray: #64748b;
+  --color-mutedGrey: #9e9e9e;
+  --color-disGray: #bdbdbd;
+  --color-steelGray: #607d8b;
+  --color-muted-grey: #9e9e9e;
+  --color-dis-gray: #bdbdbd;
+  --color-steel-gray: #607d8b;
+
+  /* Status colors */
+  --color-red: #ef4444;
+  --color-blue: #3b82f6;
+  --color-gray: #9ca3af;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
