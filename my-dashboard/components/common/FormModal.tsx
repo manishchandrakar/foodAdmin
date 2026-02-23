@@ -12,7 +12,7 @@ interface FormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  onSubmit: React.FormEventHandler<HTMLFormElement> | (() => void);
+onSubmit: (e?: React.BaseSyntheticEvent) => void | Promise<void>;
   isSubmitting?: boolean;
   submitLabel?: string;
   children: React.ReactNode;
@@ -55,7 +55,7 @@ export const FormModal = ({
 
         {asForm ? (
           <form
-            onSubmit={onSubmit as React.FormEventHandler<HTMLFormElement>}
+        onSubmit={onSubmit as React.FormEventHandler<HTMLFormElement>}
             className="flex flex-col flex-1 min-h-0"
           >
             <div className="flex-1 overflow-y-auto grid gap-4 py-4 pr-1">

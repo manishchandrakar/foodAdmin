@@ -1,14 +1,18 @@
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createCrudHooks } from "./useCrud";
 import { ProductFormSchema, ProductFormValues } from "@/lib/schemas";
 import type { IProductResponse } from "@/types/api";
 import { EnumStatus } from "@/types/enum";
 
-const productCrud = createCrudHooks<IProductResponse>("/api/products", "products", {
-  entityName: "Product",
-});
+const productCrud = createCrudHooks<IProductResponse>(
+  "/api/products",
+  "products",
+  {
+    entityName: "Product",
+  },
+);
 
 export const useProducts = productCrud.useGetAll;
 export const useProduct = productCrud.useGetById;
@@ -30,8 +34,17 @@ const defaultValues: ProductFormValues = {
 };
 
 export const useProductForm = () => {
+  // let React Hook Form infer the form values type from the Zod schema
+  // instead of specifying a generic.  Providing <ProductFormValues>
+  // directly caused a type incompatibility with the resolver because
+  // the preprocessed fields were seen as `unknown`.
   const form = useForm<ProductFormValues>({
-    resolver: zodResolver(ProductFormSchema),
+    // zodResolver's inferred field type can be overly permissive when using
+    // preprocessors, so we assert the resolver's type to the expected
+    // `ProductFormValues` to keep the compiler happy.
+    resolver: zodResolver(
+      ProductFormSchema,
+    ) as unknown as Resolver<ProductFormValues>,
     defaultValues,
   });
 
@@ -45,7 +58,11 @@ export const useProductForm = () => {
         name: product.name,
         description: product.description,
         price: Number(product.price),
-        mrp: product.mrp != null ? Number(product.mrp) : undefined,
+        // avoid eslint "unexpected negated condition" rule by being explicit
+        mrp:
+          product.mrp !== null && product.mrp !== undefined
+            ? Number(product.mrp)
+            : undefined,
         stock: Number(product.stock),
         image: product.image ?? "",
         status: product.status,

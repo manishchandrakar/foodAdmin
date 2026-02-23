@@ -40,6 +40,9 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    // the frontend doesn't use prisma config or backend code
+    "prisma.config.ts",
+    "../Backend/**"
   ]
 }
