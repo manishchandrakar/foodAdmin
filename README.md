@@ -13,17 +13,22 @@ FoodAdmin/
 
 ## Tech Stack
 
-| Layer    | Tech                              |
-|----------|-----------------------------------|
-| Backend  | Express.js, TypeScript, Prisma    |
-| Database | PostgreSQL                        |
-| Admin UI | Next.js 14, Tailwind CSS          |
-| Website  | React, Vite, TypeScript           |
-| Auth     | JWT (httpOnly cookies)            |
+<!-- Database DB.io.Digram
+https://dbdiagram.io/d/6999b53cbd82f5fce2608872
+ -->
+
+| Layer    | Tech                           |
+| -------- | ------------------------------ |
+| Backend  | Express.js, TypeScript, Prisma |
+| Database | PostgreSQL                     |
+| Admin UI | Next.js 14, Tailwind CSS       |
+| Website  | React, Vite, TypeScript        |
+| Auth     | JWT (httpOnly cookies)         |
 
 ## Getting Started
 
 ### Backend
+
 ```bash
 cd Backend
 npm install
@@ -31,13 +36,19 @@ npm run dev
 ```
 
 ### Admin Dashboard
+
 ```bash
 cd my-dashboard
 npm install
 npm run dev
 ```
 
+## DataBase Relations
+
+https://dbdiagram.io/d/6999b53cbd82f5fce2608872
+
 ### Customer Website
+
 ```bash
 cd website
 npm install
