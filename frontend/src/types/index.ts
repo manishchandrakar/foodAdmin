@@ -23,7 +23,7 @@ export interface IGstRate {
 }
 
 export interface IProduct {
-  id: string
+  id: number
   name: string
   description: string
   price: number
