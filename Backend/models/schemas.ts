@@ -11,6 +11,28 @@ export const parseId = (
   return { success: true, id: num };
 };
 
+// ─── Customer Auth ───────────────────────────────────────────────────────────
+export const CustomerRegisterSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2)
+    .max(50)
+    .regex(NAME_REGEX, "Name can only contain letters, spaces, hyphens, and apostrophes"),
+  email: z.string().trim().toLowerCase().email().max(255),
+  phone: z.string().trim().regex(PHONE_REGEX, "Invalid phone number").optional().or(z.literal("")),
+  password: z
+    .string()
+    .min(8)
+    .max(100)
+    .regex(PASSWORD_REGEX, "Password must contain uppercase, lowercase, number and special character"),
+});
+
+export const CustomerLoginSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export const LoginSchema = z.object({
   email: z.string().trim().toLowerCase().email("Invalid email address"),
@@ -110,6 +132,15 @@ export const OrderCreateSchema = z.object({
   paymentMethod: z.enum(["cash", "card", "upi", "netbanking", "wallet"]),
   address: z.string().trim().min(10).max(500),
   userId: z.number().int().positive(),
+  items: z.array(OrderItemInputSchema).min(1).max(100),
+});
+
+// Customer places an order — userId comes from session, not body
+export const CustomerOrderCreateSchema = z.object({
+  totalAmount: z.number().positive().max(9999999.99),
+  paymentMethod: z.enum(["cash", "card", "upi", "netbanking", "wallet"]),
+  address: z.string().trim().min(10).max(500),
+  couponCode: z.string().trim().optional().or(z.literal("")),
   items: z.array(OrderItemInputSchema).min(1).max(100),
 });
 

@@ -1,3 +1,5 @@
+'use client'
+
 import Select from 'react-select'
 import type { ActionMeta, SingleValue } from 'react-select'
 import { cn } from '@heroui/theme'

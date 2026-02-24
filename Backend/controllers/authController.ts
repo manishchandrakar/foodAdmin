@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     where: { email, role: { in: ALLOWED_ROLES as unknown as string[] }, isActive: true },
   });
 
-  if (!user || !user.password) {
+  if (!user?.password) {
     res.status(401).json({ error: "Invalid email or password" });
     return;
   }

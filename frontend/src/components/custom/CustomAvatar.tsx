@@ -1,3 +1,5 @@
+'use client'
+
 import { Avatar, cn } from '@heroui/react'
 
 interface ICustomAvatarProps {

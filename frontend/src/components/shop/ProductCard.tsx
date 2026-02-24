@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import { FiShoppingCart, FiStar } from 'react-icons/fi'
 import { FaStar } from 'react-icons/fa'
 import type { IProduct } from '@/types'
-import { getDiscountPercent } from '@/data/dummy'
+import { getDiscountPercent } from '@/utils/priceUtils'
 import { useCart } from '@/context/CartContext'
 
 interface IProductCardProps {
@@ -14,7 +16,7 @@ interface IProductCardProps {
 const ProductCard = (props: IProductCardProps) => {
 
 const { product, compact = false } = props
-  const navigate = useNavigate()
+  const router = useRouter()
   const { addToCart } = useCart()
   const [adding, setAdding] = useState(false)
 
@@ -32,7 +34,7 @@ const { product, compact = false } = props
   return (
     <div
       className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer group hover:shadow-md transition-all duration-200"
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => router.push(`/product/${product.id}`)}
     >
       {/* Image */}
       <div className="relative overflow-hidden bg-gray-50">

@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef, useState } from 'react'
 import { Input } from '@heroui/react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'

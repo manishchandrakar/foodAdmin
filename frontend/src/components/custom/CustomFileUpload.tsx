@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useCallback, useId, useRef } from 'react'
 import { IoCloudUploadOutline } from 'react-icons/io5'
 import { MdDeleteForever } from 'react-icons/md'

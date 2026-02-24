@@ -1,3 +1,5 @@
+'use client'
+
 import { CheckboxGroup, Checkbox } from '@heroui/react'
 
 import type { ISelectDropdownOptions } from '@/types/common'

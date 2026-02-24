@@ -1,3 +1,5 @@
+'use client'
+
 import { User } from '@heroui/react'
 
 interface ICustomProfileIconProps {

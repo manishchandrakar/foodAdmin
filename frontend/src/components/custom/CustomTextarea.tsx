@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef } from 'react'
 import { Textarea } from '@heroui/react'
 import type { ValidationError } from '@react-types/shared'

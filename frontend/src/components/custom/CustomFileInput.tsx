@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
 import { FiUpload } from 'react-icons/fi'
 import { Spinner, cn, Image } from '@heroui/react'

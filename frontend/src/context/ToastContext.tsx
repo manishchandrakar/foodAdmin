@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { setToastDispatch } from '@/utils/toast'

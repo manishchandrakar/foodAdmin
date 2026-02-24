@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+'use client'
+
+import Link from "next/link";
 import { GiStrawberry } from "react-icons/gi";
 import {
   FiFacebook,
@@ -42,15 +44,15 @@ const Footer = () => {
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               {[
-                { label: "Home", to: "/" },
-                { label: "Shop All Fruits", to: "/shop" },
-                { label: "Deals & Offers", to: "/shop?deals=true" },
-                { label: "My Orders", to: "/orders" },
-                { label: "My Profile", to: "/profile" },
+                { label: "Home", href: "/" },
+                { label: "Shop All Fruits", href: "/shop" },
+                { label: "Deals & Offers", href: "/shop?deals=true" },
+                { label: "My Orders", href: "/orders" },
+                { label: "My Profile", href: "/profile" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
-                    to={link.to}
+                    href={link.href}
                     className="hover:text-themeColorLight transition-colors"
                   >
                     {link.label}
@@ -74,7 +76,7 @@ const Footer = () => {
               ].map((cat) => (
                 <li key={cat}>
                   <Link
-                    to={`/shop?category=${cat.split(" ")[0]}`}
+                    href={`/shop?category=${cat.split(" ")[0]}`}
                     className="hover:text-themeColorLight transition-colors"
                   >
                     {cat}

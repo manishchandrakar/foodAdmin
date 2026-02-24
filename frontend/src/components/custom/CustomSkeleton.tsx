@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardHeader, CardBody, CardFooter } from '@heroui/card'
 import { Skeleton } from '@heroui/skeleton'
 

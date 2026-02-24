@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { SESSION_COOKIE, ADMIN_ROLES, ALLOWED_ROLES } from "../utils/constants";
+import { SESSION_COOKIE, CUSTOMER_COOKIE, ADMIN_ROLES, ALLOWED_ROLES, CUSTOMER_ROLES } from "../utils/constants";
 
 export interface JwtPayload {
   id: number;
@@ -95,4 +95,46 @@ export const requireAdminOrSubadmin = (
     }
     next();
   });
+};
+
+// ─── Middleware: authenticateCustomer ────────────────────────────────────────
+// Reads the customer_session cookie, verifies JWT, attaches user to req.user.
+export const authenticateCustomer = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const token: string | undefined = req.cookies[CUSTOMER_COOKIE];
+  if (!token) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const payload = verifyJwt(token);
+  if (!payload) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  req.user = payload;
+  next();
+};
+
+// ─── Middleware: requireCustomer ─────────────────────────────────────────────
+export const requireCustomer = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  authenticateCustomer(req, res, () => {
+    if (!req.user || !(CUSTOMER_ROLES as readonly string[]).includes(req.user.role)) {
+      res.status(403).json({ error: "Forbidden: customer access required" });
+      return;
+    }
+    next();
+  });
+};
+
+export const customerCookieOptions = {
+  ...cookieOptions,
+  // customer sessions expire in 30 days
+  maxAge: 60 * 60 * 24 * 30 * 1000,
 };

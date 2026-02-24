@@ -1,3 +1,5 @@
+'use client'
+
 import { FiCheckCircle, FiXCircle, FiInfo, FiAlertTriangle, FiX } from 'react-icons/fi'
 import { useToastContext } from '@/context/ToastContext'
 import type { ToastType } from '@/context/ToastContext'

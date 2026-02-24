@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import authRoutes from "./auth";
+import customerRoutes from "./customer";
 import productRoutes from "./products";
 import categoryRoutes from "./categories";
 import unitRoutes from "./units";
@@ -17,6 +18,7 @@ import uploadRoutes from "./upload";
 const router = Router();
 
 router.use("/auth", authRoutes);
+router.use("/customer", customerRoutes);
 router.use("/products", productRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/units", unitRoutes);

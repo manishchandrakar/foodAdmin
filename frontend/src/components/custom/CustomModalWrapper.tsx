@@ -1,3 +1,5 @@
+'use client'
+
 import { Modal, ModalContent, ModalHeader } from '@heroui/react'
 import type { MotionProps } from 'framer-motion'
 import type { ReactNode } from 'react'
