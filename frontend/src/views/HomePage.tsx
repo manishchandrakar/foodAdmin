@@ -2,13 +2,17 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { FiArrowRight, FiTruck, FiShield, FiRefreshCw, FiStar } from 'react-icons/fi'
+import { FiArrowRight, FiStar } from 'react-icons/fi'
 import { GiOrange, GiStrawberry, GiBanana } from 'react-icons/gi'
 import { useProducts } from '@/lib/hooks/useProducts'
 import { useCategories } from '@/lib/hooks/useCategories'
 import { getDiscountPercent } from '@/utils/priceUtils'
 import ProductCard from '@/components/shop/ProductCard'
 import CustomButton from '@/components/custom/CustomButton'
+import SectionHeader from '@/components/common/SectionHeader'
+import FilterPills from '@/components/common/FilterPills'
+import HomePageSkeleton from '@/components/skeletons/HomePageSkeleton'
+import { features } from '@/utils/constant'
 
 const testimonials = [
   { id: 1, name: 'Ananya Sharma', rating: 5, comment: 'Freshest fruits I have ever ordered online! Delivery was super fast and packaging was excellent.' },
@@ -16,19 +20,14 @@ const testimonials = [
   { id: 3, name: 'Priya Patel', rating: 4, comment: 'Great variety and reasonable prices. The strawberries were perfectly ripe and sweet.' },
 ]
 
-const features = [
-  { icon: FiTruck, title: 'Free Delivery', desc: 'On orders above ₹499' },
-  { icon: FiShield, title: 'Quality Assured', desc: 'Farm-fresh guarantee' },
-  { icon: FiRefreshCw, title: 'Easy Returns', desc: '24-hour return policy' },
-  { icon: FiStar, title: 'Best Prices', desc: 'Direct from farmers' },
-]
+
 
 const HomePage = () => {
   const router = useRouter()
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
-  const { data: products = [] } = useProducts()
-  const { data: categories = [] } = useCategories()
+  const { data: products = [], isLoading: productsLoading } = useProducts()
+  const { data: categories = [], isLoading: categoriesLoading } = useCategories()
 
   const featuredProducts = products.slice(0, 6)
   const dealProducts = products.filter(p => p.mrp && p.mrp > p.price).slice(0, 6)
@@ -36,42 +35,51 @@ const HomePage = () => {
     ? products.filter(p => p.categoryId === activeCategory).slice(0, 8)
     : products.slice(0, 8)
 
+  if (productsLoading || categoriesLoading) {
+    return <HomePageSkeleton />
+  }
+
+  const categoryPillOptions = [
+    { label: 'All', value: 'all' },
+    ...categories.map(cat => ({ label: cat.name, value: String(cat.id) })),
+  ]
+
   return (
     <div>
       {/* ── Hero Section ─────────────────────────────────────────────────── */}
       <section className="relative bg-linear-to-br from-green-50 via-emerald-50 to-lime-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 items-center">
             {/* Text */}
             <div>
               <span className="inline-block bg-green-100 text-themeColor text-sm font-semibold px-3 py-1 rounded-full mb-4">
                 🌿 100% Farm Fresh
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
                 Fresh Fruits
                 <span className="text-themeColor block">Delivered Daily</span>
               </h1>
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+              <p className="text-gray-600 text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
                 Order premium quality fruits directly from farms. Same-day delivery across major cities. Taste the freshness in every bite.
               </p>
               <div className="flex flex-wrap gap-3">
                 <CustomButton
                   text={<span className="flex items-center gap-2">Shop Now <FiArrowRight /></span>}
-                  className="px-8 py-3 text-base"
+                  className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base"
                   onPress={() => router.push('/shop')}
                 />
                 <CustomButton
                   text="View Deals"
                   variant="bordered"
-                  className="px-8 py-3 text-base text-themeColor border-themeColor"
+                  className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-themeColor border-themeColor"
                   onPress={() => router.push('/shop?deals=true')}
                 />
               </div>
               {/* Stats */}
-              <div className="flex gap-8 mt-10">
+              <div className="flex gap-4 sm:gap-8 mt-8 sm:mt-10">
                 {[['500+', 'Happy Customers'], ['50+', 'Fruit Varieties'], ['4.8★', 'Rating']].map(([val, label]) => (
                   <div key={label}>
-                    <p className="text-2xl font-bold text-themeColor">{val}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-themeColor">{val}</p>
                     <p className="text-xs text-gray-500">{label}</p>
                   </div>
                 ))}
@@ -121,15 +129,16 @@ const HomePage = () => {
       {/* ── Features Bar ─────────────────────────────────────────────────── */}
       <section className="bg-themeColor">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
             {features.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex items-center gap-3 py-2">
-                <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                  <Icon size={18} className="text-white" />
+              <div key={title} className="flex items-center gap-2 sm:gap-3 py-2">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                  <Icon size={16} className="text-white sm:hidden" />
+                  <Icon size={18} className="text-white hidden sm:block" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-sm">{title}</p>
-                  <p className="text-green-100 text-xs">{desc}</p>
+                  <p className="text-white font-semibold text-xs sm:text-sm">{title}</p>
+                  <p className="text-green-100 text-[10px] sm:text-xs hidden sm:block">{desc}</p>
                 </div>
               </div>
             ))}
@@ -138,49 +147,41 @@ const HomePage = () => {
       </section>
 
       {/* ── Categories ───────────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Shop by Category</h2>
-            <p className="text-gray-500 text-sm mt-1">Explore our wide range of fruit categories</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
+        <SectionHeader
+          title="Shop by Category"
+          subtitle="Explore our wide range of fruit categories"
+        />
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-4">
           {categories.map(cat => (
             <button
               key={cat.id}
-              className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-themeColor hover:shadow-md transition-all"
+              className="group flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-themeColor hover:shadow-md transition-all"
               onClick={() => router.push(`/shop?categoryId=${cat.id}`)}
             >
-              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-100 group-hover:border-themeColor transition-colors">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-gray-100 group-hover:border-themeColor transition-colors">
                 <img
                   src={cat.image ?? ''}
                   alt={cat.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-sm font-medium text-gray-700 group-hover:text-themeColor text-center">{cat.name}</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-themeColor text-center leading-tight">{cat.name}</span>
             </button>
           ))}
         </div>
       </section>
 
       {/* ── Featured Products ─────────────────────────────────────────────── */}
-      <section className="bg-gray-50 py-14">
+      <section className="bg-gray-50 py-8 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Featured Fruits</h2>
-              <p className="text-gray-500 text-sm mt-1">Our most popular picks just for you</p>
-            </div>
-            <button
-              className="text-themeColor text-sm font-medium flex items-center gap-1 hover:underline"
-              onClick={() => router.push('/shop')}
-            >
-              View All <FiArrowRight size={15} />
-            </button>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <SectionHeader
+            title="Featured Fruits"
+            subtitle="Our most popular picks just for you"
+            linkText="View All"
+            onLinkClick={() => router.push('/shop')}
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
             {featuredProducts.map(product => (
               <ProductCard key={product.id} product={product} compact />
             ))}
@@ -190,33 +191,27 @@ const HomePage = () => {
 
       {/* ── Deals & Offers ───────────────────────────────────────────────── */}
       {dealProducts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Best Deals Today</h2>
-              <p className="text-gray-500 text-sm mt-1">Limited time offers — grab them fast!</p>
-            </div>
-            <button
-              className="text-themeColor text-sm font-medium flex items-center gap-1 hover:underline"
-              onClick={() => router.push('/shop?deals=true')}
-            >
-              See All Deals <FiArrowRight size={15} />
-            </button>
-          </div>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
+          <SectionHeader
+            title="Best Deals Today"
+            subtitle="Limited time offers — grab them fast!"
+            linkText="See All Deals"
+            onLinkClick={() => router.push('/shop?deals=true')}
+          />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
             {dealProducts.map(product => {
               const discount = getDiscountPercent(product.price, product.mrp)
               return (
                 <div
                   key={product.id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex gap-4 p-4 cursor-pointer hover:shadow-md transition-all"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer hover:shadow-md transition-all"
                   onClick={() => router.push(`/product/${product.id}`)}
                 >
                   <img
                     src={product.image ?? ''}
                     alt={product.name}
-                    className="w-24 h-24 rounded-xl object-cover shrink-0"
+                    className="w-18 h-18 sm:w-24 sm:h-24 rounded-xl object-cover shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <span className="text-xs bg-red-50 text-red-500 font-bold px-2 py-0.5 rounded-full">
@@ -224,9 +219,9 @@ const HomePage = () => {
                     </span>
                     <h3 className="font-semibold text-gray-800 mt-1 truncate">{product.name}</h3>
                     <p className="text-xs text-gray-400">per {product.unit?.symbol}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-lg font-bold text-themeColor">₹{product.price}</span>
-                      <span className="text-sm text-gray-400 line-through">₹{product.mrp}</span>
+                    <div className="flex items-center gap-2 mt-1 sm:mt-2">
+                      <span className="text-base sm:text-lg font-bold text-themeColor">₹{product.price}</span>
+                      <span className="text-xs sm:text-sm text-gray-400 line-through">₹{product.mrp}</span>
                     </div>
                   </div>
                 </div>
@@ -237,46 +232,29 @@ const HomePage = () => {
       )}
 
       {/* ── All Products with Category Filter ───────────────────────────── */}
-      <section className="bg-gray-50 py-14">
+      <section className="bg-gray-50 py-8 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">All Fruits</h2>
-            <button
-              className="text-themeColor text-sm font-medium flex items-center gap-1 hover:underline"
-              onClick={() => router.push('/shop')}
-            >
-              View All <FiArrowRight size={15} />
-            </button>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">All Fruits</h2>
+
+            <CustomButton
+              text={<span className="flex items-center gap-2">  View All </span>}
+              variant="bordered"
+              className="px-4 sm:px-8 text-sm sm:text-base border-themeColor text-themeColor"
+              rightIcon={<FiArrowRight />}
+              onPress={() => router.push('/shop')}
+            />
+
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            <button
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                activeCategory === null
-                  ? 'bg-themeColor text-white border-themeColor'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-themeColor hover:text-themeColor'
-              }`}
-              onClick={() => setActiveCategory(null)}
-            >
-              All
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                  activeCategory === cat.id
-                    ? 'bg-themeColor text-white border-themeColor'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-themeColor hover:text-themeColor'
-                }`}
-                onClick={() => setActiveCategory(cat.id)}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
+          <FilterPills
+            options={categoryPillOptions}
+            activeValue={activeCategory === null ? 'all' : String(activeCategory)}
+            onChange={(value) => setActiveCategory(value === 'all' ? null : Number(value))}
+          />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
             {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -299,11 +277,11 @@ const HomePage = () => {
 
       {/* ── Promo Banner ─────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="bg-gradient-to-r from-themeColor to-themeColorDark rounded-3xl p-8 md:p-12 text-white text-center relative overflow-hidden">
-          <GiStrawberry size={120} className="absolute -right-6 -top-6 opacity-10" />
-          <GiOrange size={100} className="absolute -left-4 -bottom-4 opacity-10" />
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-3">Get 15% Off Your First Order!</h2>
-          <p className="text-green-100 mb-6 text-lg">Use code <strong className="bg-white/20 px-2 py-0.5 rounded">WELCOME15</strong> at checkout</p>
+        <div className="bg-gradient-to-r from-themeColor to-themeColorDark rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-white text-center relative overflow-hidden">
+          <GiStrawberry size={120} className="absolute -right-6 -top-6 opacity-10 hidden sm:block" />
+          <GiOrange size={100} className="absolute -left-4 -bottom-4 opacity-10 hidden sm:block" />
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3">Get 15% Off Your First Order!</h2>
+          <p className="text-green-100 mb-4 sm:mb-6 text-sm sm:text-lg">Use code <strong className="bg-white/20 px-2 py-0.5 rounded">WELCOME15</strong> at checkout</p>
           <CustomButton
             text="Shop Now & Save"
             className="bg-white text-themeColor hover:bg-green-50 px-8 py-3 font-bold text-base"
@@ -313,15 +291,16 @@ const HomePage = () => {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────────────────── */}
-      <section className="bg-gray-50 py-14">
+      <section className="bg-gray-50 py-8 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">What Our Customers Say</h2>
-            <p className="text-gray-500 text-sm mt-2">Thousands of happy customers love FreshFruits</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <SectionHeader
+            title="What Our Customers Say"
+            subtitle="Thousands of happy customers love FreshFruits"
+            center
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {testimonials.map(t => (
-              <div key={t.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div key={t.id} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
                 <div className="flex items-center gap-1 mb-3">
                   {Array.from({ length: t.rating }).map((_, i) => (
                     <FiStar key={i} className="fill-yellow-400 text-yellow-400" size={16} />

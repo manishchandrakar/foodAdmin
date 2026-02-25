@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
 import HomePage from '@/views/HomePage'
+
+export const metadata: Metadata = {
+  title: 'FreshFruits - Farm Fresh Fruits Delivered Daily',
+}
 
 export default HomePage

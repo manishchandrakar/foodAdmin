@@ -8,6 +8,8 @@ import { useCategories } from '@/lib/hooks/useCategories'
 import { getDiscountPercent } from '@/utils/priceUtils'
 import ProductCard from '@/components/shop/ProductCard'
 import CustomSingleSelectInput from '@/components/custom/CustomSingleSelectInput'
+import EmptyState from '@/components/common/EmptyState'
+import ShopPageSkeleton from '@/components/skeletons/ShopPageSkeleton'
 import type { ISelectDropdownOptions } from '@/types/common'
 
 const sortOptions: ISelectDropdownOptions[] = [
@@ -35,8 +37,12 @@ const ShopPage = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [onlyDeals, setOnlyDeals] = useState(urlDeals)
 
-  const { data: allProducts = [] } = useProducts()
-  const { data: categories = [] } = useCategories()
+  const { data: allProducts = [], isLoading: productsLoading } = useProducts()
+  const { data: categories = [], isLoading: categoriesLoading } = useCategories()
+
+  if (productsLoading || categoriesLoading) {
+    return <ShopPageSkeleton />
+  }
 
   const toggleCategory = (id: number) => {
     setSelectedCategories(prev =>
@@ -89,7 +95,7 @@ const ShopPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">
             {onlyDeals ? '🎉 Deals & Offers' : 'All Fruits'}
@@ -97,12 +103,12 @@ const ShopPage = () => {
           <p className="text-sm text-gray-500 mt-0.5">{filteredProducts.length} products found</p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Search */}
-          <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-white">
-            <FiSearch size={16} className="text-gray-400" />
+          <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-2 sm:px-3 py-2 bg-white flex-1 sm:flex-initial">
+            <FiSearch size={16} className="text-gray-400 shrink-0" />
             <input
-              className="outline-none text-sm w-40 md:w-56 text-gray-700"
+              className="outline-none text-sm w-full sm:w-40 md:w-56 text-gray-700"
               placeholder="Search fruits..."
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -122,7 +128,7 @@ const ShopPage = () => {
           </div>
 
           {/* View mode */}
-          <div className="flex border border-gray-200 rounded-lg overflow-hidden">
+          <div className="hidden sm:flex border border-gray-200 rounded-lg overflow-hidden">
             <button
               className={`p-2 ${viewMode === 'grid' ? 'bg-themeColor text-white' : 'bg-white text-gray-500'}`}
               onClick={() => setViewMode('grid')}
@@ -148,7 +154,7 @@ const ShopPage = () => {
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex gap-4 sm:gap-6">
         {/* ── Sidebar Filters ─────────────────────────────────────────────── */}
         <aside
           className={`shrink-0 w-60 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 h-fit sticky top-24 transition-all
@@ -233,19 +239,15 @@ const ShopPage = () => {
         {/* ── Product Grid ─────────────────────────────────────────────────── */}
         <div className="flex-1 min-w-0">
           {filteredProducts.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-              <p className="text-4xl mb-3">🍒</p>
-              <p className="text-gray-500 font-medium">No fruits found</p>
-              <p className="text-gray-400 text-sm mt-1">Try adjusting your filters or search term</p>
-              <button
-                className="mt-4 text-themeColor text-sm font-medium underline"
-                onClick={clearFilters}
-              >
-                Clear all filters
-              </button>
-            </div>
+            <EmptyState
+              icon={<p className="text-4xl">🍒</p>}
+              title="No fruits found"
+              description="Try adjusting your filters or search term"
+              actionLabel="Clear all filters"
+              onAction={clearFilters}
+            />
           ) : viewMode === 'grid' ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -255,13 +257,13 @@ const ShopPage = () => {
               {filteredProducts.map(product => (
                 <div
                   key={product.id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex gap-4 p-4 hover:shadow-md transition-all cursor-pointer"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex gap-3 sm:gap-4 p-3 sm:p-4 hover:shadow-md transition-all cursor-pointer"
                   onClick={() => router.push(`/product/${product.id}`)}
                 >
                   <img
                     src={product.image ?? ''}
                     alt={product.name}
-                    className="w-28 h-28 rounded-xl object-cover shrink-0"
+                    className="w-20 h-20 sm:w-28 sm:h-28 rounded-xl object-cover shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">

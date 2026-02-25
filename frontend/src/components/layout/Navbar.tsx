@@ -8,15 +8,11 @@ import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiPackage } fr
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
 import CustomButton from '@/components/custom/CustomButton'
-import { logo, logoPng } from '@/assets/icons'
+import { logoPng } from '@/assets/icons'
 import Image from 'next/image'
+import { navLinks } from '@/utils/constant'
 
-const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'Shop', path: '/shop' },
-  { label: 'Categories', path: '/shop' },
-  { label: 'Deals', path: '/shop?deals=true' },
-]
+
 
 const Navbar = () => {
   const { totalItems } = useCart()
@@ -42,14 +38,14 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       {/* Top bar */}
-      <div className="bg-themeColor text-white text-xs text-center py-1.5 px-4">
-        Free delivery on orders above ₹499 &nbsp;|&nbsp; Use code <strong>FRESH10</strong> for 10% off
+      <div className="bg-themeColor text-white text-[10px] sm:text-xs text-center py-1 sm:py-1.5 px-4">
+        Free delivery on orders above ₹499<span className="hidden sm:inline"> &nbsp;|&nbsp; Use code <strong>FRESH10</strong> for 10% off</span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 text-themeColor font-bold text-xl">
+          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 text-themeColor font-bold text-lg sm:text-xl">
             <Image
     src={logoPng}
     alt="FreshFruits Logo"
@@ -76,7 +72,7 @@ const Navbar = () => {
           </div>
 
           {/* Right Icons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
             {/* Search */}
             <button
               className="p-2 text-gray-600 hover:text-themeColor transition-colors"
@@ -156,7 +152,7 @@ const Navbar = () => {
             <div className="flex gap-2">
               <input
                 autoFocus
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm outline-none focus:border-themeColor"
+                className="flex-1 border border-gray-200 rounded-lg px-3 sm:px-4 py-2 text-sm outline-none focus:border-themeColor"
                 placeholder="Search fruits, categories..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}

@@ -8,6 +8,8 @@ import { useMyOrders } from '@/lib/hooks/useOrders'
 import { useUpdateProfile } from '@/lib/hooks/useAuth'
 import CustomButton from '@/components/custom/CustomButton'
 import CustomInput from '@/components/custom/CustomInput'
+import StatusBadge from '@/components/common/StatusBadge'
+import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton'
 import { modal } from '@/utils/modal'
 
 const ProfilePage = () => {
@@ -52,15 +54,15 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">My Profile</h1>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">My Profile</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* ── Profile Card ────────────────────────────────────────────────── */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 text-center">
             {/* Avatar */}
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-themeColor to-themeColorDark text-white flex items-center justify-center text-3xl font-bold mx-auto mb-4">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-themeColor to-themeColorDark text-white flex items-center justify-center text-2xl sm:text-3xl font-bold mx-auto mb-4">
               {user?.name.charAt(0)}
             </div>
             <h2 className="text-xl font-bold text-gray-800">{user?.name}</h2>
@@ -77,7 +79,7 @@ const ProfilePage = () => {
                 { val: `₹${totalSpent}`, label: 'Spent' },
               ].map(({ val, label }) => (
                 <div key={label}>
-                  <p className="text-lg font-bold text-themeColor">{val}</p>
+                  <p className="text-base sm:text-lg font-bold text-themeColor">{val}</p>
                   <p className="text-xs text-gray-400">{label}</p>
                 </div>
               ))}
@@ -215,13 +217,7 @@ const ProfilePage = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-bold text-themeColor">₹{order.totalAmount}</p>
-                      <span className={`text-xs capitalize font-medium ${
-                        order.status === 'delivered' ? 'text-green-600'
-                        : order.status === 'cancelled' ? 'text-red-500'
-                        : 'text-orange-500'
-                      }`}>
-                        {order.status}
-                      </span>
+                      <StatusBadge status={order.status} />
                     </div>
                   </div>
                 ))}

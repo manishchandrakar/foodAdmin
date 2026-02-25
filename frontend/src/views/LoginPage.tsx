@@ -65,7 +65,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] flex">
       {/* Left: Decorative */}
-      <div className="hidden lg:flex flex-col justify-center items-center flex-1 bg-gradient-to-br from-themeColor to-themeColorDark text-white p-12">
+      <div className="hidden lg:flex flex-col justify-center items-center flex-1 bg-gradient-to-br from-themeColor to-themeColorDark text-white p-8 xl:p-12">
         <GiStrawberry size={80} className="mb-6 opacity-80" />
         <h2 className="text-3xl font-extrabold mb-3">FreshFruits</h2>
         <p className="text-green-100 text-center text-lg leading-relaxed max-w-xs">
@@ -82,7 +82,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right: Form */}
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md">
           <div className="flex items-center gap-2 text-themeColor font-bold text-xl mb-6 lg:hidden">
             <GiStrawberry size={24} /> FreshFruits
@@ -125,9 +125,11 @@ const LoginPage = () => {
                 onValueChange={v => setLoginData(d => ({ ...d, password: v }))}
               />
               <div className="flex justify-end">
-                <button type="button" className="text-sm text-themeColor hover:underline">
-                  Forgot password?
-                </button>
+              <CustomButton
+                text="Forgot password?"
+                className="text-sm text-themeColor hover:underline"
+                onPress={() => router.push('/forgot-password')}
+              />
               </div>
               <CustomButton
                 text="Login to Account"
@@ -137,9 +139,8 @@ const LoginPage = () => {
               />
               <p className="text-center text-sm text-gray-500">
                 Don&apos;t have an account?{' '}
-                <button type="button" className="text-themeColor font-medium hover:underline" onClick={() => setTab('register')}>
-                  Register here
-                </button>
+                <CustomButton text="Register here" className="text-sm text-themeColor font-medium hover:underline" onPress={() => setTab('register')} />
+              
               </p>
             </form>
           )}

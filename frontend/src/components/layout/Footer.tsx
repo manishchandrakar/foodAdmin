@@ -13,12 +13,12 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-gray-900 text-gray-300 mt-8 sm:mt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 text-white font-bold text-xl mb-4">
+          <div className="col-span-2 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-2 text-white font-bold text-lg sm:text-xl mb-4">
               <GiStrawberry size={26} className="text-themeColorLight" />
               <span>FreshFruits</span>
             </div>
@@ -127,7 +127,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+        <div className="border-t border-gray-800 mt-8 sm:mt-10 pt-4 sm:pt-6 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs text-gray-500">
           <p>© 2025 FreshFruits. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="hover:text-gray-300">

@@ -183,3 +183,4 @@ export const ratingColor = (rating: number) => {
   if (rating >= 3) return "bg-yellow-100 text-yellow-700";
   return "bg-red-100 text-red-700";
 };
+

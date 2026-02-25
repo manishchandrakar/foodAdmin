@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext'
 import { useValidateCoupon } from '@/lib/hooks/useCoupons'
 import CustomButton from '@/components/custom/CustomButton'
 import CustomInput from '@/components/custom/CustomInput'
+import EmptyState from '@/components/common/EmptyState'
 
 const CartPage = () => {
   const router = useRouter()
@@ -42,14 +43,13 @@ const CartPage = () => {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <p className="text-7xl mb-5">🛒</p>
-        <h2 className="text-2xl font-bold text-gray-700 mb-2">Your cart is empty</h2>
-        <p className="text-gray-500 mb-6">Add some fresh fruits to get started!</p>
-        <CustomButton
-          text={<span className="flex items-center gap-2"><FiShoppingBag /> Browse Fruits</span>}
-          className="px-8"
-          onPress={() => router.push('/shop')}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <EmptyState
+          icon={<p className="text-7xl">🛒</p>}
+          title="Your cart is empty"
+          description="Add some fresh fruits to get started!"
+          actionLabel="Browse Fruits"
+          onAction={() => router.push('/shop')}
         />
       </div>
     )
@@ -57,23 +57,23 @@ const CartPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        Shopping Cart <span className="text-gray-400 text-base font-normal">({totalItems} items)</span>
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
+        Shopping Cart <span className="text-gray-400 text-sm sm:text-base font-normal">({totalItems} items)</span>
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
         {/* ── Cart Items ───────────────────────────────────────────────────── */}
         <div className="lg:col-span-2 space-y-4">
           {items.map(item => (
             <div
               key={item.product.id}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex gap-4 items-start"
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 sm:p-4 flex gap-3 sm:gap-4 items-start"
             >
               {/* Product Image */}
               <img
                 src={item.product.image ?? ''}
                 alt={item.product.name}
-                className="w-20 h-20 rounded-xl object-cover shrink-0 cursor-pointer"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 cursor-pointer"
                 onClick={() => router.push(`/product/${item.product.id}`)}
               />
 
@@ -82,7 +82,7 @@ const CartPage = () => {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h3
-                      className="font-semibold text-gray-800 hover:text-themeColor cursor-pointer"
+                      className="font-semibold text-sm sm:text-base text-gray-800 hover:text-themeColor cursor-pointer"
                       onClick={() => router.push(`/product/${item.product.id}`)}
                     >
                       {item.product.name}
@@ -123,7 +123,7 @@ const CartPage = () => {
 
                   {/* Price */}
                   <div className="text-right">
-                    <p className="font-bold text-themeColor text-lg">
+                    <p className="font-bold text-themeColor text-base sm:text-lg">
                       ₹{(item.product.price * item.quantity).toFixed(0)}
                     </p>
                     <p className="text-xs text-gray-400">₹{item.product.price} × {item.quantity}</p>
@@ -144,7 +144,7 @@ const CartPage = () => {
 
         {/* ── Order Summary ────────────────────────────────────────────────── */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 lg:sticky lg:top-24">
             <h2 className="text-lg font-bold text-gray-800 mb-5">Order Summary</h2>
 
             {/* Coupon */}

@@ -1,5 +1,10 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import ShopPage from '@/views/ShopPage'
+
+export const metadata: Metadata = {
+  title: 'Shop - FreshFruits',
+}
 
 export default function ShopRoute() {
   return (

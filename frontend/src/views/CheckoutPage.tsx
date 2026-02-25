@@ -143,16 +143,16 @@ const CheckoutPage = () => {
   const stepIndex = steps.findIndex(s => s.key === step)
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">Checkout</h1>
 
       {/* Steps Progress */}
-      <div className="flex items-center gap-0 mb-8">
+      <div className="flex items-center gap-0 mb-6 sm:mb-8">
         {steps.map((s, i) => (
           <div key={s.key} className="flex items-center flex-1">
             <div className="flex flex-col items-center">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all ${
                   i < stepIndex
                     ? 'bg-themeColor text-white'
                     : i === stepIndex
@@ -173,18 +173,18 @@ const CheckoutPage = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
         {/* ── Left: Form ───────────────────────────────────────────────────── */}
         <div className="lg:col-span-2">
 
           {/* Step 1: Address */}
           {step === 'address' && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-5">
                 <FiMapPin size={18} className="text-themeColor" />
                 <h2 className="text-lg font-bold text-gray-800">Delivery Address</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <CustomInput label="Full Name" placeholder="Rahul Sharma" value={address.name} isRequired onValueChange={v => setAddress(a => ({ ...a, name: v }))} />
                 <CustomInput label="Phone Number" placeholder="9876543210" value={address.phone} isRequired onValueChange={v => setAddress(a => ({ ...a, phone: v }))} />
                 <div className="sm:col-span-2">
@@ -202,7 +202,7 @@ const CheckoutPage = () => {
 
           {/* Step 2: Payment */}
           {step === 'payment' && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-5">
                 <FiCreditCard size={18} className="text-themeColor" />
                 <h2 className="text-lg font-bold text-gray-800">Payment Method</h2>
@@ -211,7 +211,7 @@ const CheckoutPage = () => {
                 {paymentMethods.map(({ id, label, sub, icon: Icon }) => (
                   <label
                     key={id}
-                    className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                       paymentMethod === id
                         ? 'border-themeColor bg-green-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -255,14 +255,14 @@ const CheckoutPage = () => {
 
           {/* Step 3: Confirm */}
           {step === 'confirm' && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
               <h2 className="text-lg font-bold text-gray-800 mb-5">Review Your Order</h2>
 
               {/* Items */}
               <div className="space-y-3 mb-5">
                 {items.map(item => (
                   <div key={item.product.id} className="flex items-center gap-3">
-                    <img src={item.product.image ?? ''} alt={item.product.name} className="w-12 h-12 rounded-lg object-cover" />
+                    <img src={item.product.image ?? ''} alt={item.product.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{item.product.name}</p>
                       <p className="text-xs text-gray-400">{item.quantity} × ₹{item.product.price}</p>
@@ -273,10 +273,10 @@ const CheckoutPage = () => {
               </div>
 
               {/* Address Summary */}
-              <div className="bg-gray-50 rounded-xl p-4 mb-4 text-sm">
+              <div className="bg-gray-50 rounded-xl p-3 sm:p-4 mb-4 text-xs sm:text-sm">
                 <p className="font-semibold text-gray-700 mb-1">📍 Delivery Address</p>
                 <p className="text-gray-600">{address.name} · {address.phone}</p>
-                <p className="text-gray-600">{address.street}, {address.city}, {address.state} - {address.pincode}</p>
+                <p className="text-gray-600 break-words">{address.street}, {address.city}, {address.state} - {address.pincode}</p>
               </div>
 
               {/* Payment Summary */}
@@ -303,7 +303,7 @@ const CheckoutPage = () => {
 
         {/* ── Right: Summary ────────────────────────────────────────────────── */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5 lg:sticky lg:top-24">
             <h3 className="font-bold text-gray-800 mb-4">Order Summary</h3>
             <div className="space-y-2 text-sm text-gray-600 mb-4">
               <div className="flex justify-between">
