@@ -28,7 +28,7 @@ import { paymentMethodOptions } from "@/utils/constants";
 import PageSkeleton from "@/components/common/PageSkeleton";
 import type { ICartLineItem } from "@/types/commonTypes";
 
-type FormItem = ICartLineItem & { readonly _key: string };
+ type FormItem = ICartLineItem & { readonly _key: string };
 interface LocalCreateFormState { userId: string; items: FormItem[]; }
 
 interface IFormErrors {
@@ -48,16 +48,7 @@ const cartStatusColor: Record<string, string> = {
   checked_out: "bg-blue-100 text-blue-700",
   abandoned:   "bg-zinc-100 text-zinc-600",
 };
-
-const columns: ColumnDef[] = [
-  { uid: "id",        name: "#" },
-  { uid: "user",      name: "Customer" },
-  { uid: "items",     name: "Items" },
-  { uid: "total",     name: "Total" },
-  { uid: "status",    name: "Status" },
-  { uid: "createdAt", name: "Date" },
-  { uid: "actions",   name: "" },
-];
+;
 
 const createEmptyForm = (): LocalCreateFormState => ({
   userId: "",
