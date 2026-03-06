@@ -12,9 +12,9 @@ const app = express();
 const PORT: number = Number(process.env.PORT) || 5000;
 
 // ─── CORS ───────────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000 " || "http://localhost:3001")
-  .split(",")
-  .map((o) => o.trim());
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : ["http://localhost:3000", "http://localhost:3001"];
 
 app.use(
   cors({

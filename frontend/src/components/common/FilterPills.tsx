@@ -4,7 +4,8 @@ interface IFilterPillsProps {
   onChange: (value: string) => void;
 }
 
-const FilterPills = ({ options, activeValue, onChange }: IFilterPillsProps) => {
+const FilterPills = (props: IFilterPillsProps) => {
+  const { options, activeValue, onChange } = props;
   return (
     <div className="flex flex-wrap gap-2 mb-6">
       {options.map((option) => (

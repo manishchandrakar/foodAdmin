@@ -26,3 +26,14 @@ export const trackingSteps = ['confirmed', 'processing', 'shipped', 'delivered']
     { label: 'Categories', path: '/shop' },
     { label: 'Deals', path: '/shop?deals=true' },
   ]
+
+  export 
+const columns: ColumnDef[] = [
+  { uid: "id",        name: "#" },
+  { uid: "user",      name: "Customer" },
+  { uid: "items",     name: "Items" },
+  { uid: "total",     name: "Total" },
+  { uid: "status",    name: "Status" },
+  { uid: "createdAt", name: "Date" },
+  { uid: "actions",   name: "" },
+]

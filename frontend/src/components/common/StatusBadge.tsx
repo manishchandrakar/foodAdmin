@@ -4,7 +4,8 @@ interface IStatusBadgeProps {
   status: string;
 }
 
-const StatusBadge = ({ status }: IStatusBadgeProps) => {
+const StatusBadge = (props: IStatusBadgeProps) => {
+  const { status } = props;
   const cfg = statusConfig[status] ?? statusConfig.pending;
 
   return (

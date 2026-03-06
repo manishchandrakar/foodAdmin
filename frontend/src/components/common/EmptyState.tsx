@@ -9,13 +9,8 @@ interface IEmptyStateProps {
   onAction?: () => void;
 }
 
-const EmptyState = ({
-  icon,
-  title,
-  description,
-  actionLabel,
-  onAction,
-}: IEmptyStateProps) => {
+const EmptyState = (props: IEmptyStateProps) => {
+  const { icon, title, description, actionLabel, onAction } = props;
   return (
     <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
       <div className="mx-auto mb-4">{icon}</div>

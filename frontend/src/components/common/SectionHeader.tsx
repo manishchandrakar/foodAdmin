@@ -8,13 +8,8 @@ interface ISectionHeaderProps {
   center?: boolean;
 }
 
-const SectionHeader = ({
-  title,
-  subtitle,
-  linkText,
-  onLinkClick,
-  center = false,
-}: ISectionHeaderProps) => {
+const SectionHeader = (props: ISectionHeaderProps) => {
+  const { title, subtitle, linkText, onLinkClick, center } = props;
   return (
     <div className={`flex items-center justify-between mb-6 sm:mb-8 ${center ? "flex-col text-center" : ""}`}>
       <div>

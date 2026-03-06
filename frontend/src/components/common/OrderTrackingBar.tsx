@@ -4,7 +4,8 @@ interface IOrderTrackingBarProps {
   currentStatus: string;
 }
 
-const OrderTrackingBar = ({ currentStatus }: IOrderTrackingBarProps) => {
+const OrderTrackingBar = (props: IOrderTrackingBarProps) => {
+  const { currentStatus } = props;
   const stepIdx = trackingSteps.indexOf(currentStatus);
 
   if (stepIdx < 0) return null;
