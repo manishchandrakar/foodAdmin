@@ -26,11 +26,12 @@ const CustomTextarea = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(
           ref={ref}
           rows={4}
           className={cn(
-            "w-full px-3 py-2 text-sm rounded-md border bg-white outline-none transition-colors resize-none",
-            "placeholder:text-gray-400 text-slateGray",
+            "w-full px-3 py-2 text-sm rounded-md border outline-none transition-colors resize-none",
+            "bg-white dark:bg-zinc-800/80 text-slateGray",
+            "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
             isInvalid
               ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-              : "border-lightGray focus:border-themeColor focus:ring-1 focus:ring-themeColor",
+              : "border-lightGray focus:border-themeColor focus:ring-1 focus:ring-themeColor/50",
             className
           )}
           {...props}

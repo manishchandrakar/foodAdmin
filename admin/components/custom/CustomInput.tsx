@@ -47,11 +47,12 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
             ref={ref}
             type={inputType}
             className={cn(
-              "w-full h-10 px-3 py-2 text-sm rounded-md border bg-white outline-none transition-colors",
-              "placeholder:text-gray-400 text-slateGray",
+              "w-full h-10 px-3 py-2 text-sm rounded-md border outline-none transition-colors",
+              "bg-white dark:bg-zinc-800/80 text-slateGray",
+              "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
               isInvalid
                 ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                : "border-lightGray focus:border-themeColor focus:ring-1 focus:ring-themeColor",
+                : "border-lightGray focus:border-themeColor focus:ring-1 focus:ring-themeColor/50",
               (isPassword || endContent) && "pr-10",
               className
             )}

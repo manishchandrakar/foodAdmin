@@ -29,8 +29,8 @@ const CustomButton = ({
         "h-9 px-4 rounded-md inline-flex items-center justify-center gap-2 text-sm font-medium transition-colors cursor-pointer",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         variant === "solid"   && "bg-themeColor text-white hover:bg-themeColor/90",
-        variant === "outline" && "border border-lightGray bg-white text-slateGray hover:bg-gray-50",
-        variant === "ghost"   && "bg-transparent text-slateGray hover:bg-gray-100",
+        variant === "outline" && "border border-lightGray bg-white dark:bg-zinc-800 text-slateGray hover:bg-gray-50 dark:hover:bg-zinc-700",
+        variant === "ghost"   && "bg-transparent text-slateGray hover:bg-gray-100 dark:hover:bg-zinc-800",
         variant === "danger"  && "bg-red-500 text-white hover:bg-red-600",
         className
       )}

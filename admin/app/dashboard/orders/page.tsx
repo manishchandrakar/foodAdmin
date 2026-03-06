@@ -91,16 +91,16 @@ const OrdersPage = () => {
         <p className="text-sm text-gray-400">Orders are created via Cart checkout</p>
       </div>
 
-      <div className="bg-white shadow rounded-xl overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 shadow rounded-xl overflow-hidden">
         <Table
           aria-label="Orders table"
           classNames={{
-            table:  ["bg-white"],
-            thead:  ["bg-gray-50"],
+            table:  ["bg-white", "dark:bg-zinc-900"],
+            thead:  ["bg-gray-50", "dark:bg-zinc-800/50"],
             th:     ["py-3", "px-4", "text-left", "text-xs", "font-semibold", "text-slateGray", "uppercase", "tracking-wide"],
-            tbody:  ["divide-y", "divide-gray-100"],
+            tbody:  ["divide-y", "divide-gray-100", "dark:divide-zinc-800"],
             td:     ["py-3", "px-4", "text-sm", "text-slateGray"],
-            tr:     ["hover:bg-gray-50", "transition-colors"],
+            tr:     ["hover:bg-gray-50", "dark:hover:bg-zinc-800/50", "transition-colors"],
           }}
         >
           <TableHeader columns={OrdersColumns}>

@@ -27,7 +27,7 @@ export const DeleteModal = ({
           Delete {entityName}
         </DialogTitle>
       </DialogHeader>
-      <p className="text-sm text-gray-500 py-2">
+      <p className="text-sm text-zinc-500 dark:text-zinc-400 py-2">
         Are you sure you want to delete this {entityName.toLowerCase()}? This action cannot be undone.
       </p>
       <DialogFooter className="border-t border-lightGray pt-3">

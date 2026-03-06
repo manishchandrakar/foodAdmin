@@ -1,4 +1,7 @@
+"use client"
+
 import React from 'react'
+import { useTheme } from 'next-themes'
 import { ISelectDropdownOptions } from '@/types/entities'
 import { cn } from '@/utils/utils'
 import Select, { ActionMeta, SingleValue } from 'react-select'
@@ -53,12 +56,25 @@ function CustomSingleSelectInput<TValue extends string = string>(
 		menuPlacement = 'bottom',
 	} = props
 
+	const { resolvedTheme } = useTheme()
+	const isDark = resolvedTheme === 'dark'
+
+	const controlBg    = isDark ? '#27272a' : '#ffffff'
+	const menuBg       = isDark ? '#1c1c1f' : '#ffffff'
+	const optionBg     = isDark ? '#27272a' : '#ffffff'
+	const optionHover  = isDark ? '#3f3f46' : '#f4f4f5'
+	const optionSel    = isDark ? '#624AB1' : '#624AB1'
+	const textColor    = isDark ? '#e4e4e7' : '#303030'
+	const borderColor  = isInvalid ? '#ef4444' : isDark ? '#3f3f46' : '#d4d4d8'
+	const borderHover  = isInvalid ? '#ef4444' : isDark ? '#52525b' : '#a1a1aa'
+	const placeholderC = isDark ? '#71717a' : '#a1a1aa'
+
 	return (
 		<div>
 			{label && (
 				<label
 					className={cn(
-						'block text-left mb-1 text-sm font-medium text-zinc-700 dark:text-zinc-300',
+						'block text-left mb-1 text-sm font-medium text-slateGray',
 						isDisabled && 'text-zinc-400',
 						isInvalid && 'text-red-500'
 					)}
@@ -81,31 +97,52 @@ function CustomSingleSelectInput<TValue extends string = string>(
 				options={options}
 				placeholder={placeholder}
 				styles={{
-					control: provided => ({
+					control: (provided, state) => ({
 						...provided,
 						height: `${height}px`,
+						minHeight: `${height}px`,
 						borderRadius: '8px',
 						cursor: 'pointer',
-						backgroundColor: 'var(--color-background, #fff)',
-						paddingLeft: '10px',
-						border: isInvalid ? '1px solid #ef4444' : '1px solid #d4d4d8',
-						':hover': { border: '2px solid #a1a1aa' },
+						backgroundColor: controlBg,
+						paddingLeft: '6px',
+						border: `1px solid ${state.isFocused ? '#624AB1' : borderColor}`,
+						boxShadow: state.isFocused ? '0 0 0 1px #624AB1' : 'none',
+						':hover': { borderColor: borderHover },
 					}),
-					menuList: provided => ({ ...provided, cursor: 'pointer' }),
-					menu: provided => ({
+					menuList: (provided) => ({ ...provided, cursor: 'pointer', padding: '4px' }),
+					menu: (provided) => ({
 						...provided,
-						backgroundColor: 'var(--color-background, #fff)',
-						color: '#71717a',
-						cursor: 'pointer',
+						backgroundColor: menuBg,
+						border: `1px solid ${isDark ? '#3f3f46' : '#e4e4e7'}`,
+						boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+						borderRadius: '8px',
 						zIndex: 99,
 					}),
-					option: provided => ({
+					option: (provided, state) => ({
 						...provided,
 						textTransform: 'capitalize',
 						cursor: 'pointer',
+						borderRadius: '6px',
+						backgroundColor: state.isSelected
+							? optionSel
+							: state.isFocused
+							? optionHover
+							: optionBg,
+						color: state.isSelected ? '#ffffff' : textColor,
 					}),
-					placeholder: provided => ({ ...provided, color: '#a1a1aa' }),
-					indicatorSeparator: provided => ({ ...provided, display: 'none' }),
+					singleValue: (provided) => ({ ...provided, color: textColor }),
+					input: (provided) => ({ ...provided, color: textColor }),
+					placeholder: (provided) => ({ ...provided, color: placeholderC }),
+					indicatorSeparator: (provided) => ({ ...provided, display: 'none' }),
+					dropdownIndicator: (provided) => ({
+						...provided,
+						color: isDark ? '#71717a' : '#a1a1aa',
+					}),
+					clearIndicator: (provided) => ({
+						...provided,
+						color: isDark ? '#71717a' : '#a1a1aa',
+						':hover': { color: isDark ? '#e4e4e7' : '#303030' },
+					}),
 				}}
 				value={value}
 				onBlur={onBlur}
