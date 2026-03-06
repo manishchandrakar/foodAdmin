@@ -9,15 +9,16 @@ import type { IUserResponse } from "@/types/api";
 import type { CustomerFormValues } from "@/lib/schemas";
 import CustomButton from "@/components/custom/CustomButton";
 import CustomInput from "@/components/custom/CustomInput";
+import CustomSingleSelectInput from "@/components/SingleDropdown";
 import {
-  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, type ColumnDef,
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,
 } from "@/components/custom/Table";
 import { FormModal } from "@/components/common/FormModal";
 import { DeleteModal } from "@/components/common/DeleteModal";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import PageSkeleton from "@/components/common/PageSkeleton";
-import { EnumUserRole } from "@/types/enum";
-import { customerColumns } from "@/utils/constants";
+import { EnumCustomerType, EnumUserRole } from "@/types/enum";
+import { customerColumns, customerTypeOptions, customerTypeColor } from "@/utils/constants";
 
 
 
@@ -29,7 +30,7 @@ const CustomersPage = () => {
   const { mutate: remove } = useDeleteUser();
 
   const { form, resetForCreate, resetForEdit } = useCustomerForm();
-  const { register, handleSubmit, formState: { errors } } = form;
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = form;
 
   const customers = users?.filter((u) => u.role === EnumUserRole.CUSTOMER) ?? [];
 
@@ -40,7 +41,12 @@ const CustomersPage = () => {
   const openCreate = () => { setEditingId(null); resetForCreate(); setOpen(true); };
   const openEdit = (u: IUserResponse) => { setEditingId(u.id); resetForEdit(u); setOpen(true); };
   const onSubmit = (data: CustomerFormValues) => {
-    const payload = { ...data, role: EnumUserRole.CUSTOMER, password: data.password || undefined, phone: data.phone || undefined };
+    const payload = {
+      ...data,
+      role: EnumUserRole.CUSTOMER,
+      password: data.password || undefined,
+      phone: data.phone || undefined,
+    };
     if (editingId) update({ id: editingId, payload }, { onSuccess: () => setOpen(false) });
     else create(payload, { onSuccess: () => setOpen(false) });
   };
@@ -50,10 +56,16 @@ const CustomersPage = () => {
 
   const renderCell = (u: IUserResponse, key: string) => {
     switch (key) {
-      case "id":      return <span>{u.id}</span>;
-      case "name":    return <span>{u.name}</span>;
-      case "email":   return <span>{u.email}</span>;
-      case "phone":   return <span>{u.phone || "—"}</span>;
+      case "id":    return <span>{u.id}</span>;
+      case "name":  return <span>{u.name}</span>;
+      case "email": return <span>{u.email}</span>;
+      case "phone": return <span>{u.phone || "—"}</span>;
+      case "customerType":
+        return (
+          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${customerTypeColor[u.customerType] || "bg-gray-100 text-gray-600"}`}>
+            {u.customerType === EnumCustomerType.B2B ? "B2B" : "B2C"}
+          </span>
+        );
       case "actions":
         return isAdmin ? (
           <div className="flex gap-1">
@@ -74,7 +86,13 @@ const CustomersPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slateGray">Customers</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-slateGray">Customers</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">
+            B2C: {customers.filter((u) => u.customerType !== EnumCustomerType.B2B).length} &nbsp;|&nbsp;
+            B2B: {customers.filter((u) => u.customerType === EnumCustomerType.B2B).length}
+          </p>
+        </div>
         {isAdmin && (
           <CustomButton leftIcon={<FaPlus size={12} />} text="Add Customer" onClick={openCreate} />
         )}
@@ -122,6 +140,16 @@ const CustomersPage = () => {
           isInvalid={!!errors.password} errorMessage={errors.password?.message} {...register("password")} />
         <CustomInput label="Phone"
           isInvalid={!!errors.phone} errorMessage={errors.phone?.message} {...register("phone")} />
+        <CustomSingleSelectInput
+          label="Customer Type"
+          value={customerTypeOptions.find((o) => o.value === watch("customerType")) ?? null}
+          options={customerTypeOptions}
+          onChange={(selected) => {
+            if (selected) setValue("customerType", selected.value);
+          }}
+          isClearable={false}
+          placeholder="Select type"
+        />
       </FormModal>
 
       <DeleteModal open={!!deleteId} onOpenChange={() => setDeleteId(null)} onConfirm={confirmDelete} entityName="Customer" />

@@ -7,6 +7,8 @@ import {
   EnumStatus,
   EnumPaymentMethod,
   EnumCouponStatus,
+  EnumVendorStatus,
+  EnumCustomerType,
 } from "@/types/enum";
 
 export const statusOptions: ISelectDropdownOptions<EnumOrderStatus>[] = [
@@ -43,6 +45,17 @@ export const roleOptions: ISelectDropdownOptions<EnumUserRole>[] = [
   { label: "Admin",     value: EnumUserRole.ADMIN },
 ];
 
+export const vendorStatusOptions: ISelectDropdownOptions<EnumVendorStatus>[] = [
+  { label: "Active",   value: EnumVendorStatus.ACTIVE },
+  { label: "Inactive", value: EnumVendorStatus.INACTIVE },
+  { label: "Pending",  value: EnumVendorStatus.PENDING },
+];
+
+export const customerTypeOptions: ISelectDropdownOptions<EnumCustomerType>[] = [
+  { label: "B2C (Retail)",    value: EnumCustomerType.B2C },
+  { label: "B2B (Wholesale)", value: EnumCustomerType.B2B },
+];
+
 export const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -52,6 +65,17 @@ export const statusColor: Record<string, string> = {
   shipped:   "bg-indigo-100 text-indigo-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-red-100 text-red-700",
+};
+
+export const vendorStatusColor: Record<string, string> = {
+  active:   "bg-green-100 text-green-700",
+  inactive: "bg-zinc-100 text-zinc-600",
+  pending:  "bg-yellow-100 text-yellow-700",
+};
+
+export const customerTypeColor: Record<string, string> = {
+  b2c: "bg-blue-100 text-blue-700",
+  b2b: "bg-purple-100 text-purple-700",
 };
 
 export const ADMIN_ROLES = [EnumUserRole.ADMIN];
@@ -102,11 +126,12 @@ export const couponColumns: ColumnDef[] = [
 ];
 
 export const customerColumns: ColumnDef[] = [
-  { uid: "id",      name: "#" },
-  { uid: "name",    name: "Name" },
-  { uid: "email",   name: "Email" },
-  { uid: "phone",   name: "Phone" },
-  { uid: "actions", name: "" },
+  { uid: "id",           name: "#" },
+  { uid: "name",         name: "Name" },
+  { uid: "email",        name: "Email" },
+  { uid: "phone",        name: "Phone" },
+  { uid: "customerType", name: "Type" },
+  { uid: "actions",      name: "" },
 ];
 
 export const OrdersColumns: ColumnDef[] = [
@@ -143,12 +168,25 @@ export const PaymentsColumns: ColumnDef[] = [
 export const ProductColumns: ColumnDef[] = [
   { uid: "id",       name: "#" },
   { uid: "name",     name: "Name" },
+  { uid: "vendor",   name: "Vendor" },
   { uid: "mrp",      name: "MRP" },
   { uid: "price",    name: "Selling Price" },
+  { uid: "b2bPrice", name: "B2B Price" },
   { uid: "gst",      name: "GST" },
   { uid: "stock",    name: "Stock" },
   { uid: "unit",     name: "Unit" },
   { uid: "category", name: "Category" },
+  { uid: "status",   name: "Status" },
+  { uid: "actions",  name: "" },
+];
+
+export const VendorColumns: ColumnDef[] = [
+  { uid: "id",       name: "#" },
+  { uid: "name",     name: "Name" },
+  { uid: "email",    name: "Email" },
+  { uid: "phone",    name: "Phone" },
+  { uid: "gstin",    name: "GSTIN" },
+  { uid: "products", name: "Products" },
   { uid: "status",   name: "Status" },
   { uid: "actions",  name: "" },
 ];
@@ -174,7 +212,6 @@ export const UnitsColumns: ColumnDef[] = [
 export const couponStatusColor: Record<string, string> = {
   active:   "bg-green-100 text-green-700",
   inactive: "bg-zinc-100 text-zinc-600",
-
   expired:  "bg-red-100 text-red-700",
 };
 
@@ -183,4 +220,3 @@ export const ratingColor = (rating: number) => {
   if (rating >= 3) return "bg-yellow-100 text-yellow-700";
   return "bg-red-100 text-red-700";
 };
-

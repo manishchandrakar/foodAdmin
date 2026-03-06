@@ -4,10 +4,21 @@ export enum EnumUserRole {
   CUSTOMER = "customer",
 }
 
+export enum EnumCustomerType {
+  B2C = "b2c",
+  B2B = "b2b",
+}
+
 export enum EnumStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",
   OUT_OF_STOCK = "out_of_stock",
+}
+
+export enum EnumVendorStatus {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  PENDING = "pending",
 }
 
 export enum EnumOrderStatus {
@@ -25,6 +36,7 @@ export enum EnumPaymentMethod {
   NETBANKING = "netbanking",
   WALLET = "wallet",
 }
+
 export enum EnumCouponStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",

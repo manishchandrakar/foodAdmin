@@ -11,6 +11,7 @@ import {
 import { useCategories } from "@/hooks/useCategories";
 import { useUnits } from "@/hooks/useUnits";
 import { useGstRates } from "@/hooks/useGstRates";
+import { useVendors } from "@/hooks/useVendors";
 import useAuthStore from "@/store/authStore";
 import type { ISelectDropdownOptions } from "@/types/entities";
 import type { IProductResponse } from "@/types/api";
@@ -52,6 +53,7 @@ const ProductsPage = () => {
   const { data: categories } = useCategories();
   const { data: units } = useUnits();
   const { data: gstRates } = useGstRates();
+  const { data: vendors } = useVendors();
   const { mutate: create, isPending: isCreating } = useCreateProduct();
   const { mutate: update, isPending: isUpdating } = useUpdateProduct();
   const { mutate: remove } = useDeleteProduct();
@@ -86,6 +88,11 @@ const ProductsPage = () => {
       })) ?? [],
     [gstRates],
   );
+  const vendorOptions: ISelectDropdownOptions[] = useMemo(
+    () =>
+      vendors?.map((v) => ({ label: v.name, value: String(v.id) })) ?? [],
+    [vendors],
+  );
 
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -105,9 +112,12 @@ const ProductsPage = () => {
     const payload = {
       ...data,
       mrp: data.mrp || undefined,
+      b2bPrice: data.b2bPrice || undefined,
+      minOrderQty: data.minOrderQty || undefined,
       categoryId: data.categoryId ? Number(data.categoryId) : undefined,
       unitId: data.unitId ? Number(data.unitId) : undefined,
       gstRateId: data.gstRateId ? Number(data.gstRateId) : undefined,
+      vendorId: data.vendorId ? Number(data.vendorId) : undefined,
       image: data.image || undefined,
     };
     if (editingId)
@@ -135,6 +145,14 @@ const ProductsPage = () => {
         return <span>{p.id}</span>;
       case "name":
         return <span className="font-medium">{p.name}</span>;
+      case "vendor":
+        return p.vendor ? (
+          <span className="px-1.5 py-0.5 border border-lightGray rounded text-xs">
+            {p.vendor.name}
+          </span>
+        ) : (
+          <span>—</span>
+        );
       case "mrp":
         return p.mrp && p.mrp > p.price ? (
           <span className="line-through text-gray-400 text-xs">
@@ -158,6 +176,17 @@ const ProductsPage = () => {
           </div>
         );
       }
+      case "b2bPrice":
+        return p.b2bPrice ? (
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium text-purple-700">{formatNumberToRupees(p.b2bPrice)}</span>
+            {p.minOrderQty && (
+              <span className="text-[11px] text-gray-400">Min {p.minOrderQty} units</span>
+            )}
+          </div>
+        ) : (
+          <span className="text-gray-300">—</span>
+        );
       case "gst":
         return p.gstRate ? (
           <span className="px-1.5 py-0.5 border border-lightGray rounded text-xs">
@@ -283,6 +312,7 @@ const ProductsPage = () => {
           {...register("description")}
         />
 
+        {/* Pricing */}
         <div className="grid grid-cols-2 gap-4">
           <CustomInput
             label="MRP (optional)"
@@ -302,6 +332,27 @@ const ProductsPage = () => {
             isInvalid={!!errors.price}
             errorMessage={errors.price?.message}
             {...register("price", { valueAsNumber: true })}
+          />
+        </div>
+
+        {/* B2B Pricing */}
+        <div className="grid grid-cols-2 gap-4">
+          <CustomInput
+            label="B2B Price (wholesale)"
+            type="number"
+            step="0.01"
+            min={0}
+            isInvalid={!!errors.b2bPrice}
+            errorMessage={errors.b2bPrice?.message}
+            {...register("b2bPrice", { valueAsNumber: true })}
+          />
+          <CustomInput
+            label="Min Order Qty (B2B)"
+            type="number"
+            min={1}
+            isInvalid={!!errors.minOrderQty}
+            errorMessage={errors.minOrderQty?.message}
+            {...register("minOrderQty", { valueAsNumber: true })}
           />
         </div>
 
@@ -368,15 +419,27 @@ const ProductsPage = () => {
             placeholder="Select category"
           />
         </div>
-        <CustomSingleSelectInput
-          label="Unit"
-          value={unitOptions.find((o) => o.value === watch("unitId")) ?? null}
-          options={unitOptions}
-          onChange={(selected) =>
-            setValue("unitId", selected?.value ?? undefined)
-          }
-          placeholder="Select unit"
-        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <CustomSingleSelectInput
+            label="Unit"
+            value={unitOptions.find((o) => o.value === watch("unitId")) ?? null}
+            options={unitOptions}
+            onChange={(selected) =>
+              setValue("unitId", selected?.value ?? undefined)
+            }
+            placeholder="Select unit"
+          />
+          <CustomSingleSelectInput
+            label="Vendor"
+            value={vendorOptions.find((o) => o.value === watch("vendorId")) ?? null}
+            options={vendorOptions}
+            onChange={(selected) =>
+              setValue("vendorId", selected?.value ?? undefined)
+            }
+            placeholder="Select vendor (optional)"
+          />
+        </div>
       </FormModal>
 
       <DeleteModal

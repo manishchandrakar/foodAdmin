@@ -48,7 +48,6 @@ const CustomProfileInput = (props: ICustomProfileInputProps) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
 	useEffect(() => {
-		/* eslint-disable react-hooks/set-state-in-effect */
 		let url: string | null = null
 
 		if (value) {
@@ -68,7 +67,6 @@ const CustomProfileInput = (props: ICustomProfileInputProps) => {
 			}
 			setPreviewUrl(null)
 		}
-		/* eslint-enable react-hooks/set-state-in-effect */
 	}, [value])
 
 	const displayName = value

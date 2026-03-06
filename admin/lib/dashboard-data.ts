@@ -1,4 +1,4 @@
-import { FaDollarSign, FaUsers, FaShoppingCart, FaChartLine, FaChartBar, FaCog, FaHome, FaBoxOpen, FaThList, FaMoneyCheckAlt, FaTags, FaStar, FaUserFriends, FaCartPlus, FaPercent } from "react-icons/fa"
+import { FaDollarSign, FaUsers, FaShoppingCart, FaChartLine, FaChartBar, FaCog, FaHome, FaBoxOpen, FaThList, FaMoneyCheckAlt, FaTags, FaStar, FaUserFriends, FaCartPlus, FaPercent, FaStore, FaBuilding } from "react-icons/fa"
 import { z } from "zod"
 import { IStat } from "@/utils/validators"
 import { StatSchema } from "./schemas"
@@ -38,77 +38,6 @@ export const getDashboardStats = (): IStat[] => {
   return z.array(StatSchema).parse(stats)
 }
 
-
-
-
-// export const asideItems: IAsideItem[] = z.array(AsideItemSchema).parse([
-//   {
-//     label: "Dashboard",
-//     href: "/dashboard",
-//     icon: FaHome,
-//   },
-//   {
-//     label: "Products",
-//     href: "/dashboard/products",
-//     icon: FaBoxOpen,
-//   },
-//   {
-//     label: "Categories",
-//     href: "/dashboard/categories",
-//     icon: FaThList,
-//   },
-//   {
-//     label: "Units",
-//     href: "/dashboard/units",
-//     icon: FaMoneyCheckAlt,
-//   },
-//   {
-//     label: "Cart",
-//     href: "/dashboard/cart",
-//     icon: FaCartPlus,
-//   },
-//   {
-//     label: "Orders",
-//     href: "/dashboard/orders",
-//     icon: FaShoppingCart,
-//   },
-//   {
-//     label: "Users",
-//     href: "/dashboard/users",
-//     icon: FaUsers,
-//   },
-//   {
-//     label: "Customers",
-//     href: "/dashboard/customers",
-//     icon: FaUserFriends,
-//   },
-//   {
-//     label: "Payments",
-//     href: "/dashboard/payments",
-//     icon: FaMoneyCheckAlt,
-//   },
-//   {
-//     label: "Coupons",
-//     href: "/dashboard/coupons",
-//     icon: FaTags,
-//   },
-//   {
-//     label: "Reviews",
-//     href: "/dashboard/reviews",
-//     icon: FaStar,
-//   },
-//   {
-//     label: "Reports",
-//     href: "/dashboard/reports",
-//     icon: FaChartBar,
-//   },
-//   {
-//     label: "Settings",
-//     href: "/dashboard/settings",
-//     icon: FaCog,
-//   },
-// ])
-
 export const asideItems = [
   {
     title: "Main",
@@ -125,6 +54,13 @@ export const asideItems = [
       { label: "Units", href: "/dashboard/units", icon: FaMoneyCheckAlt },
       { label: "GST Rates", href: "/dashboard/gst-rates", icon: FaPercent },
       { label: "Coupons", href: "/dashboard/coupons", icon: FaTags },
+    ],
+  },
+  {
+    title: "Vendors & B2B",
+    items: [
+      { label: "Vendors", href: "/dashboard/vendors", icon: FaStore },
+      { label: "B2B Customers", href: "/dashboard/b2b", icon: FaBuilding },
     ],
   },
   {

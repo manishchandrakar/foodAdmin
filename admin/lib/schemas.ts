@@ -1,10 +1,10 @@
 import { z } from "zod"
 import { NAME_REGEX, PASSWORD_REGEX, PHONE_REGEX, COUPON_CODE_REGEX, GROWTH_REGEX } from "@/utils/regex";
-import { EnumOrderStatus, EnumPaymentMethod, EnumStatus, EnumTransactionStatus, EnumUserRole } from "@/types/enum";
+import { EnumOrderStatus, EnumPaymentMethod, EnumStatus, EnumTransactionStatus, EnumUserRole, EnumVendorStatus, EnumCustomerType } from "@/types/enum";
 import { IconType } from "react-icons";
 
 
- export const iconSchema = z.custom<IconType>((val) => typeof val === "function") 
+ export const iconSchema = z.custom<IconType>((val) => typeof val === "function")
 
  export const StatSchema = z.object({
    title: z.string().min(1),
@@ -124,6 +124,47 @@ export const GstRateCreateSchema = z.object({
     .max(100, "GST percentage cannot exceed 100%"),
 })
 export const GstRateUpdateSchema = GstRateCreateSchema.partial()
+
+// ─── Vendor ───
+export const VendorFormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Vendor name must be at least 2 characters")
+    .max(100, "Vendor name must be at most 100 characters"),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Invalid email address")
+    .max(255, "Email must be at most 255 characters"),
+  phone: z
+    .string()
+    .trim()
+    .regex(PHONE_REGEX, "Invalid phone number (e.g. +1234567890)")
+    .optional()
+    .or(z.literal("")),
+  address: z
+    .string()
+    .trim()
+    .max(500, "Address must be at most 500 characters")
+    .optional()
+    .or(z.literal("")),
+  gstin: z
+    .string()
+    .trim()
+    .regex(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
+      "Invalid GSTIN format (e.g. 22AAAAA0000A1Z5)",
+    )
+    .optional()
+    .or(z.literal("")),
+  status: z.enum(EnumVendorStatus, {
+    message: "Status must be active, inactive, or pending",
+  }).default(EnumVendorStatus.ACTIVE),
+})
+
+export type VendorFormValues = z.infer<typeof VendorFormSchema>
 
 // ─── Product ───
 export const ProductCreateSchema = z.object({
@@ -398,6 +439,14 @@ export const ProductFormSchema = z.object({
     (val) => (typeof val === "number" && isNaN(val)) ? undefined : val,
     z.number().positive("MRP must be positive").max(999999.99, "MRP cannot exceed 999,999.99").optional()
   ),
+  b2bPrice: z.preprocess(
+    (val) => (typeof val === "number" && isNaN(val)) ? undefined : val,
+    z.number().positive("B2B price must be positive").max(999999.99, "B2B price cannot exceed 999,999.99").optional()
+  ),
+  minOrderQty: z.preprocess(
+    (val) => (typeof val === "number" && isNaN(val)) ? undefined : val,
+    z.number().int("Min order qty must be a whole number").min(1).max(100000).optional()
+  ),
   stock: z.preprocess(
     (val) => (typeof val === "number" && isNaN(val)) ? 0 : val,
     z.number({ error: "Stock must be a number" }).int("Stock must be a whole number").min(0, "Stock cannot be negative").max(1000000, "Stock cannot exceed 1,000,000")
@@ -410,6 +459,8 @@ export const ProductFormSchema = z.object({
   unitId: z.string().optional(),
   /** GST rate ID from the dropdown — stored as string from form select, coerced to number on submit */
   gstRateId: z.string().optional(),
+  /** Vendor ID from the dropdown */
+  vendorId: z.string().optional(),
 })
 export type ProductFormValues = z.infer<typeof ProductFormSchema>
 
@@ -443,6 +494,9 @@ export const CustomerFormSchema = z.object({
     .regex(PHONE_REGEX, "Invalid phone number (e.g. +1234567890)")
     .optional()
     .or(z.literal("")),
+  customerType: z.enum(EnumCustomerType, {
+    message: "Customer type must be b2c or b2b",
+  }).default(EnumCustomerType.B2C),
 })
 
 export const VerifyOtpSchema = z.object({

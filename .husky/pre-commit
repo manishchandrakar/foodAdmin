@@ -1,0 +1,27 @@
+echo "Running lint checks..."
+
+echo "[1/3] Backend lint..."
+cd backend && yarn lint
+if [ $? -ne 0 ]; then
+  echo "Backend ESLint failed. Fix errors before committing."
+  exit 1
+fi
+cd ..
+
+echo "[2/3] Admin lint..."
+cd admin && yarn lint
+if [ $? -ne 0 ]; then
+  echo "Admin ESLint failed. Fix errors before committing."
+  exit 1
+fi
+cd ..
+
+echo "[3/3] Frontend lint..."
+cd frontend && yarn lint
+if [ $? -ne 0 ]; then
+  echo "Frontend ESLint failed. Fix errors before committing."
+  exit 1
+fi
+cd ..
+
+echo "All lint checks passed."

@@ -50,6 +50,17 @@ const cartStatusColor: Record<string, string> = {
 };
 ;
 
+
+const columns: ColumnDef[] = [
+  { uid: 'id',        name: '#' },
+  { uid: 'user',      name: 'Customer' },
+  { uid: 'items',     name: 'Items' },
+  { uid: 'total',     name: 'Total' },
+  { uid: 'status',    name: 'Status' },
+  { uid: 'createdAt', name: 'Created' },
+  { uid: 'actions',   name: '' },
+];
+
 const createEmptyForm = (): LocalCreateFormState => ({
   userId: "",
   items: [{ productId: "", quantity: 1, price: 0, _key: crypto.randomUUID() }],

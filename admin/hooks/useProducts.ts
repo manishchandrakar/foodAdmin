@@ -25,12 +25,15 @@ const defaultValues: ProductFormValues = {
   description: "",
   price: 0,
   mrp: undefined,
+  b2bPrice: undefined,
+  minOrderQty: undefined,
   stock: 0,
   image: "",
   status: EnumStatus.ACTIVE,
   categoryId: undefined,
   unitId: undefined,
   gstRateId: undefined,
+  vendorId: undefined,
 };
 
 export const useProductForm = () => {
@@ -58,10 +61,17 @@ export const useProductForm = () => {
         name: product.name,
         description: product.description,
         price: Number(product.price),
-        // avoid eslint "unexpected negated condition" rule by being explicit
         mrp:
           product.mrp !== null && product.mrp !== undefined
             ? Number(product.mrp)
+            : undefined,
+        b2bPrice:
+          product.b2bPrice !== null && product.b2bPrice !== undefined
+            ? Number(product.b2bPrice)
+            : undefined,
+        minOrderQty:
+          product.minOrderQty !== null && product.minOrderQty !== undefined
+            ? Number(product.minOrderQty)
             : undefined,
         stock: Number(product.stock),
         image: product.image ?? "",
@@ -69,6 +79,7 @@ export const useProductForm = () => {
         categoryId: product.categoryId ? String(product.categoryId) : undefined,
         unitId: product.unitId ? String(product.unitId) : undefined,
         gstRateId: product.gstRateId ? String(product.gstRateId) : undefined,
+        vendorId: product.vendorId ? String(product.vendorId) : undefined,
       });
     },
     [form],

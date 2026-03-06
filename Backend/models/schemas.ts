@@ -55,19 +55,13 @@ export const UserCreateSchema = z.object({
     .trim()
     .min(2)
     .max(50)
-    .regex(
-      NAME_REGEX,
-      "Name can only contain letters, spaces, hyphens, and apostrophes",
-    ),
+    .regex(NAME_REGEX, "Name can only contain letters, spaces, hyphens, and apostrophes"),
   email: z.string().trim().toLowerCase().email().max(255),
   password: z
     .string()
     .min(8)
     .max(100)
-    .regex(
-      PASSWORD_REGEX,
-      "Password must contain uppercase, lowercase, number and special character",
-    ),
+    .regex(PASSWORD_REGEX, "Password must contain uppercase, lowercase, number and special character"),
   phone: z
     .string()
     .trim()
@@ -75,9 +69,35 @@ export const UserCreateSchema = z.object({
     .optional()
     .or(z.literal("")),
   role: z.enum(["admin", "subAdmin", "customer"]).default("subAdmin"),
+  customerType: z.enum(["b2c", "b2b"]).default("b2c"),
 });
 
 export const UserUpdateSchema = UserCreateSchema.partial();
+
+// ─── Vendor ───────────────────────────────────────────────────────────────────
+export const VendorCreateSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  email: z.string().trim().toLowerCase().email().max(255),
+  phone: z
+    .string()
+    .trim()
+    .regex(PHONE_REGEX, "Invalid phone number")
+    .optional()
+    .or(z.literal("")),
+  address: z.string().trim().max(500).optional().or(z.literal("")),
+  gstin: z
+    .string()
+    .trim()
+    .regex(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
+      "Invalid GSTIN format (e.g. 22AAAAA0000A1Z5)",
+    )
+    .optional()
+    .or(z.literal("")),
+  status: z.enum(["active", "inactive", "pending"]).default("active"),
+});
+
+export const VendorUpdateSchema = VendorCreateSchema.partial();
 
 // ─── Category ─────────────────────────────────────────────────────────────────
 export const CategoryCreateSchema = z.object({
@@ -110,12 +130,15 @@ export const ProductCreateSchema = z.object({
   description: z.string().trim().min(5).max(1000),
   price: z.number().positive().max(999999.99),
   mrp: z.number().positive().max(999999.99).optional(),
+  b2bPrice: z.number().positive().max(999999.99).optional(),
+  minOrderQty: z.number().int().min(1).max(100000).optional(),
   stock: z.number().int().min(0).max(1000000),
   image: z.string().trim().max(2048).optional().or(z.literal("")),
   status: z.enum(["active", "inactive", "out_of_stock"]).default("active"),
   categoryId: z.number().int().positive().optional(),
   unitId: z.number().int().positive().optional(),
   gstRateId: z.number().int().positive().optional(),
+  vendorId: z.number().int().positive().optional(),
 });
 
 export const ProductUpdateSchema = ProductCreateSchema.partial();
@@ -135,7 +158,6 @@ export const OrderCreateSchema = z.object({
   items: z.array(OrderItemInputSchema).min(1).max(100),
 });
 
-// Customer places an order — userId comes from session, not body
 export const CustomerOrderCreateSchema = z.object({
   totalAmount: z.number().positive().max(9999999.99),
   paymentMethod: z.enum(["cash", "card", "upi", "netbanking", "wallet"]),

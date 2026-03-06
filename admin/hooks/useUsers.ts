@@ -1,9 +1,10 @@
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createCrudHooks } from "./useCrud";
 import { CustomerFormSchema, CustomerFormValues } from "@/lib/schemas";
 import type { IUserResponse } from "@/types/api";
+import { EnumCustomerType } from "@/types/enum";
 
 const userCrud = createCrudHooks<IUserResponse>("/api/users", "users", {
   entityName: "User",
@@ -20,11 +21,12 @@ const defaultValues: CustomerFormValues = {
   email: "",
   password: "",
   phone: "",
+  customerType: EnumCustomerType.B2C,
 };
 
 export const useCustomerForm = () => {
   const form = useForm<CustomerFormValues>({
-    resolver: zodResolver(CustomerFormSchema),
+    resolver: zodResolver(CustomerFormSchema) as unknown as Resolver<CustomerFormValues>,
     defaultValues,
   });
 
@@ -39,6 +41,7 @@ export const useCustomerForm = () => {
         email: user.email,
         password: "",
         phone: user.phone ?? "",
+        customerType: user.customerType ?? EnumCustomerType.B2C,
       });
     },
     [form],

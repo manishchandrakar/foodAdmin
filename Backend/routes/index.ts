@@ -14,6 +14,7 @@ import reviewRoutes from "./reviews";
 import paymentRoutes from "./payments";
 import dashboardRoutes from "./dashboard";
 import uploadRoutes from "./upload";
+import vendorRoutes from "./vendors";
 
 const router = Router();
 
@@ -31,5 +32,6 @@ router.use("/reviews", reviewRoutes);
 router.use("/payments", paymentRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/upload", uploadRoutes);
+router.use("/vendors", vendorRoutes);
 
 export default router;

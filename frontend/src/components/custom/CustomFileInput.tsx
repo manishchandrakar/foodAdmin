@@ -52,7 +52,6 @@ const CustomFileInputs = (props: ICustomFileInputProps) => {
 	const [filePreview, setFilePreview] = useState<string | null>(defaultImage || null)
 
 	useEffect(() => {
-		/* eslint-disable react-hooks/set-state-in-effect */
 		if (value && showPreview) {
 			const url = URL.createObjectURL(value)
 			setFilePreview(url)
@@ -60,7 +59,6 @@ const CustomFileInputs = (props: ICustomFileInputProps) => {
 		} else if (!value) {
 			setFilePreview(defaultImage || null)
 		}
-		/* eslint-enable react-hooks/set-state-in-effect */
 	}, [value, showPreview, defaultImage])
 
 	const displayName = value

@@ -1,11 +1,13 @@
 import {
   EnumCartStatus,
   EnumCouponStatus,
+  EnumCustomerType,
   EnumOrderStatus,
   EnumPaymentMethod,
   EnumStatus,
   EnumTransactionStatus,
   EnumUserRole,
+  EnumVendorStatus,
 } from "./enum";
 
 // ─── Base ───
@@ -20,8 +22,20 @@ export interface IUser extends IBaseEntity {
   email: string;
   phone?: string | null;
   role: EnumUserRole;
+  customerType: EnumCustomerType;
   description?: string | null;
   isActive: boolean;
+}
+
+// ─── Vendor ───
+export interface IVendor extends IBaseEntity {
+  name: string;
+  email: string;
+  phone?: string | null;
+  address?: string | null;
+  gstin?: string | null;
+  status: EnumVendorStatus;
+  _count?: { products: number };
 }
 
 // ─── Category ───
@@ -53,6 +67,10 @@ export interface IProduct extends IBaseEntity {
   price: number;
   /** Maximum Retail Price — shown crossed-out to indicate discount */
   mrp?: number | null;
+  /** Wholesale price for B2B customers */
+  b2bPrice?: number | null;
+  /** Minimum order quantity for B2B */
+  minOrderQty?: number | null;
   stock: number;
   image?: string | null;
   status: EnumStatus;
@@ -62,6 +80,8 @@ export interface IProduct extends IBaseEntity {
   unit?: IUnit | null;
   gstRateId?: number | null;
   gstRate?: IGstRate | null;
+  vendorId?: number | null;
+  vendor?: IVendor | null;
 }
 
 // ─── OrderItem ───

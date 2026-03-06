@@ -5,7 +5,7 @@ import { ProductCreateSchema, ProductUpdateSchema, parseId } from "../models/sch
 // GET /api/products
 export const getAll = async (_req: Request, res: Response): Promise<void> => {
   const products = await prisma.product.findMany({
-    include: { category: true, unit: true, gstRate: true },
+    include: { category: true, unit: true, gstRate: true, vendor: true },
   });
   res.json(products);
 };
@@ -17,7 +17,7 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
 
   const product = await prisma.product.findUnique({
     where: { id: result.id },
-    include: { category: true, unit: true, gstRate: true },
+    include: { category: true, unit: true, gstRate: true, vendor: true },
   });
   if (!product) { res.status(404).json({ error: "Not found" }); return; }
   res.json(product);
@@ -28,7 +28,10 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   const parsed = ProductCreateSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.format() }); return; }
 
-  const product = await prisma.product.create({ data: parsed.data });
+  const product = await prisma.product.create({
+    data: parsed.data,
+    include: { category: true, unit: true, gstRate: true, vendor: true },
+  });
   res.status(201).json(product);
 };
 
@@ -40,7 +43,11 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   const parsed = ProductUpdateSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.format() }); return; }
 
-  const product = await prisma.product.update({ where: { id: result.id }, data: parsed.data });
+  const product = await prisma.product.update({
+    where: { id: result.id },
+    data: parsed.data,
+    include: { category: true, unit: true, gstRate: true, vendor: true },
+  });
   res.json(product);
 };
 

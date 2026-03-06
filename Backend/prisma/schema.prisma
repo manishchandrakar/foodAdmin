@@ -7,21 +7,35 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String
-  email       String    @unique
-  password    String?
-  phone       String?   @unique
-  role        String    @default("customer")
-  description String?
-  otp         String?
-  otpExpiry   DateTime?
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  password     String?
+  phone        String?   @unique
+  role         String    @default("customer")
+  customerType String    @default("b2c") // "b2c" | "b2b"
+  description  String?
+  otp          String?
+  otpExpiry    DateTime?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
 
   orders    Order[]
   reviews   Review[]
   carts     Cart[]
+}
+
+model Vendor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  address   String?
+  gstin     String?  @unique
+  status    String   @default("active") // "active" | "inactive" | "pending"
+  createdAt DateTime @default(now())
+
+  products Product[]
 }
 
 model Unit {
@@ -60,6 +74,8 @@ model Product {
   description String
   price       Float
   mrp         Float?
+  b2bPrice    Float?   // Wholesale price for B2B customers
+  minOrderQty Int?     // Minimum order quantity for B2B
   stock       Int
   image       String?
   status      String   @default("active")
@@ -73,6 +89,9 @@ model Product {
 
   gstRateId Int?
   gstRate   GstRate?  @relation(fields: [gstRateId], references: [id])
+
+  vendorId Int?
+  vendor   Vendor?   @relation(fields: [vendorId], references: [id])
 
   orderItems OrderItem[]
   reviews    Review[]

@@ -100,7 +100,6 @@ const CustomMultiSelectInput = (props: ICustomMultiSelectProps) => {
 			<Select
 				className="text-start cursor-pointer z-50 custom-scrollbar"
 				components={{
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					ValueContainer: (props: any) => <ValueContainer {...props} visibleValue={visibleValue} />
 				}}
 				isClearable={isClearable}

@@ -11,6 +11,7 @@ import type {
   ICartItem,
   IReview,
   ICoupon,
+  IVendor,
 } from "./entities";
 
 // ─── Generic Response Utilities ───────────────────────────────────────────
@@ -45,16 +46,20 @@ export type IUserResponse = IUser;
 /** GET /api/payments — flat, no includes */
 export type IPaymentResponse = IPayment;
 
+/** GET /api/vendors — with product count */
+export type IVendorResponse = IVendor;
+
 // ─── Entity Responses with Resolved Relations ─────────────────────────────
 
 /**
- * GET /api/products — Prisma `include: { category, unit, gstRate }`.
- * All three relations are always present (nullable if FK is unset).
+ * GET /api/products — Prisma `include: { category, unit, gstRate, vendor }`.
+ * All relations are always present (nullable if FK is unset).
  */
-export interface IProductResponse extends Omit<IProduct, "category" | "unit" | "gstRate"> {
+export interface IProductResponse extends Omit<IProduct, "category" | "unit" | "gstRate" | "vendor"> {
   category: ICategory | null;
   unit: IUnit | null;
   gstRate: IGstRate | null;
+  vendor: IVendor | null;
 }
 
 /** Order item as returned when nested inside an IOrderResponse */
