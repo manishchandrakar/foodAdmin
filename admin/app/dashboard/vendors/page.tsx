@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, Resolver } from "react-hook-form";
+import { useForm, useWatch, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useVendors,
@@ -47,10 +47,12 @@ const VendorsPage = () => {
   const { mutate: update, isPending: isUpdating } = useUpdateVendor();
   const { mutate: remove } = useDeleteVendor();
 
-  const { register, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm<VendorFormValues>({
+  const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<VendorFormValues>({
     resolver: zodResolver(VendorFormSchema) as unknown as Resolver<VendorFormValues>,
     defaultValues,
   });
+
+  const statusValue = useWatch({ control, name: "status" });
 
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -240,7 +242,7 @@ const VendorsPage = () => {
 
         <CustomSingleSelectInput
           label="Status"
-          value={vendorStatusOptions.find((o) => o.value === watch("status")) ?? null}
+          value={vendorStatusOptions.find((o) => o.value === statusValue) ?? null}
           options={vendorStatusOptions}
           onChange={(selected) => {
             if (selected) setValue("status", selected.value);

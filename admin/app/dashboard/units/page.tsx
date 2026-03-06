@@ -9,7 +9,8 @@ import type { IUnit } from "@/types/entities";
 import CustomButton from "@/components/custom/CustomButton";
 import CustomInput from "@/components/custom/CustomInput";
 import {
-  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, type ColumnDef,
+
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,
 } from "@/components/custom/Table";
 import { FormModal } from "@/components/common/FormModal";
 import { DeleteModal } from "@/components/common/DeleteModal";

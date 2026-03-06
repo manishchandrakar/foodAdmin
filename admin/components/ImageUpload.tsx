@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
+import Image from "next/image"
 import { cn } from "@/utils/utils"
 import { FaCloudUploadAlt, FaTrash } from "react-icons/fa"
 import { showErrorToast } from "@/utils/toastUtils"
@@ -93,8 +94,8 @@ const ImageUpload = (props: ImageUploadProps) => {
       )}
 
       {value ? (
-        <div className="relative group rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-          <img src={value} alt="Preview" className="w-full h-40 object-cover" />
+        <div className="relative group rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden h-40">
+          <Image src={value} alt="Preview" fill className="object-cover" unoptimized />
           <button
             type="button"
             onClick={handleRemove}
