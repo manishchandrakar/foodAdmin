@@ -40,16 +40,6 @@ const ShopPage = () => {
   const { data: allProducts = [], isLoading: productsLoading } = useProducts()
   const { data: categories = [], isLoading: categoriesLoading } = useCategories()
 
-  if (productsLoading || categoriesLoading) {
-    return <ShopPageSkeleton />
-  }
-
-  const toggleCategory = (id: number) => {
-    setSelectedCategories(prev =>
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
-    )
-  }
-
   const filteredProducts = useMemo(() => {
     let list = [...allProducts]
 
@@ -80,6 +70,16 @@ const ShopPage = () => {
 
     return list
   }, [allProducts, search, selectedCategories, priceRange, sortOption, onlyDeals])
+
+  const toggleCategory = (id: number) => {
+    setSelectedCategories(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    )
+  }
+
+  if (productsLoading || categoriesLoading) {
+    return <ShopPageSkeleton />
+  }
 
   const clearFilters = () => {
     setSearch('')
