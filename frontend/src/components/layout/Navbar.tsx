@@ -8,7 +8,6 @@ import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiPackage } fr
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
 import CustomButton from '@/components/custom/CustomButton'
-import { logoPng } from '@/assets/icons'
 import Image from 'next/image'
 import { navLinks } from '@/utils/constant'
 
@@ -45,14 +44,15 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 text-themeColor font-bold text-lg sm:text-xl">
+          <Link href="/" className="flex items-center gap-2 text-themeColor font-bold text-lg sm:text-xl">
             <Image
-    src={logoPng}
-    alt="FreshFruits Logo"
-    width={32}
-    height={32}
-    priority
-  />
+              src="/logoABCD.png"
+              alt="Logo"
+              width={140}
+              height={48}
+              priority
+              className="h-10 sm:h-12 w-auto object-contain drop-shadow-sm"
+            />
             <span>FreshFruits</span>
           </Link>
 
