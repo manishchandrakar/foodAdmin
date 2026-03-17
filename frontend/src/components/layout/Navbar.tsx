@@ -53,7 +53,7 @@ const Navbar = () => {
               priority
               className="h-10 sm:h-12 w-auto object-contain drop-shadow-sm"
             />
-            <span>FreshFruits</span>
+            <span className="hidden sm:inline">FreshFruits</span>
           </Link>
 
           {/* Desktop Nav Links */}
@@ -129,11 +129,13 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <CustomButton
-                text="Login"
-                className="h-8 text-sm px-4"
-                onPress={() => router.push('/login')}
-              />
+              <div className="hidden sm:block">
+                <CustomButton
+                  text="Login"
+                  className="h-8 text-sm px-4"
+                  onPress={() => router.push('/login')}
+                />
+              </div>
             )}
 
             {/* Mobile Menu Toggle */}
